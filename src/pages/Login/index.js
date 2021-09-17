@@ -4,24 +4,24 @@ import {
   AuthUserContext,
   AuthDispatchContext,
 } from "../../context/UserContext";
+import { useHistory } from "react-router-dom";
 
-const Login = ({ history }) => {
-    console.log("login props", history)
+const Login = () => {
   const [email, setEmail] = useState("email");
   const [password, setPassword] = useState("password");
   const { loading, errorMessage } = useContext(AuthUserContext);
   const dispatch = useContext(AuthDispatchContext);
+  let history = useHistory();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    let payload = {email, password};
-
+    
+    let payload = { email, password };
 
     try {
-      let response = await loginUser(dispatch, payload); //loginUser action makes the request and handles all the neccessary state changes
-      console.log(response)
-    //   if (!response.user) return;
-      history.push("/dashboard"); //navigate to dashboard on success
+      let response = await loginUser(dispatch, payload);
+      if (!response.user) return;
+      history.push("/dashboard");
     } catch (error) {
       console.log(error);
     }

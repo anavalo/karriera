@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const ROOT_URL = "https://ka-fe-assignment.azurewebsites.net/api";
 
 export async function loginUser(dispatch, loginPayload) {
@@ -29,8 +30,10 @@ export async function loginUser(dispatch, loginPayload) {
   }
 }
 
-export async function logout(dispatch) {
+export function logout(dispatch) {
+  console.log("log me out bitch")
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("user");
   localStorage.removeItem("token");
+
 }

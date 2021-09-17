@@ -1,24 +1,27 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import routes from "./config/routes.js";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./context/UserContext";
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Header from './components/Layout/Header'
 
-function App() {
+
+const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Header/>
         <Switch>
-          {routes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              component={route.component}
-            />
-          ))}
+        <Route exact path="/">
+            <Login/>
+        </Route>
+        <Route exact path="/dashboard">
+            <Dashboard/>
+        </Route>
         </Switch>
       </BrowserRouter>
     </AuthProvider>
   );
-}
+};
 
 export default App;

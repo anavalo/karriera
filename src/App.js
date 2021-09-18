@@ -1,24 +1,20 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./context/UserContext";
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Header from './components/Layout/Header'
-
+import ProtectedRoute from "./components/Layout/ProtectedRoute";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Header from "./components/Layout/Header";
 
 const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Header/>
-        <Switch>
+        <Header />
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} />
         <Route exact path="/">
-            <Login/>
+          <Login />
         </Route>
-        <Route exact path="/dashboard">
-            <Dashboard/>
-        </Route>
-        </Switch>
       </BrowserRouter>
     </AuthProvider>
   );

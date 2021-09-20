@@ -1,8 +1,8 @@
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).user
+let user = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
   : "";
-let token = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).auth_token
+let token = localStorage.getItem("token")
+  ? JSON.parse(localStorage.getItem("token"))
   : "";
 
 export const initialState = {
@@ -31,6 +31,7 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         user: "",
         token: "",
+        loading: false,
       };
 
     default:

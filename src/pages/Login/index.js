@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { loginUser } from "../../services/actions";
+import React, { useState, useContext, useEffect } from "react";
+import { loginUser } from "../../services";
 import {
   AuthUserContext,
   AuthDispatchContext,
@@ -9,13 +9,20 @@ import { useHistory } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("email");
   const [password, setPassword] = useState("password");
-  const { loading, errorMessage } = useContext(AuthUserContext);
+  const { loading } = useContext(AuthUserContext);
   const dispatch = useContext(AuthDispatchContext);
   let history = useHistory();
 
+  useEffect(() => {
+    const isAuth = localStorage.getItem("token") !== null;
+    if (isAuth) {
+      history.push("/dashboard");
+    }
+  }, [history]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     let payload = { email, password };
 
     try {
@@ -31,7 +38,6 @@ const Login = () => {
     <>
       <div>
         <h1>Login</h1>
-        {errorMessage ? <p>{errorMessage}</p> : null}
         <form>
           <div>
             <div>

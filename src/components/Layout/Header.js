@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { logout } from "../../services/actions";
+import { logout } from "../../services";
 import { AuthDispatchContext } from "../../context/UserContext";
 import { useHistory } from "react-router-dom";
 
@@ -8,7 +8,6 @@ const Header = () => {
   let history = useHistory();
 
   const handleLogout = () => {
-      console.log("click logout")
     logout(dispatch);
     history.push("/");
   };

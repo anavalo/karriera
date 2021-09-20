@@ -10,17 +10,16 @@ export async function loginUser(dispatch, loginPayload) {
   const headers = { "Content-Type": "application/json" };
 
   dispatch({ type: "REQUEST_LOGIN" });
+
   let { data } = await axios
     .post(`${ROOT_URL}/login`, JSON.stringify(body), {
       headers: headers,
     })
-    .catch(function (error) {
+    .catch(function loginError(error) {
       if (error.response) {
         if (error.response.status === 422) {
           alert("wrong credentials");
           dispatch({ type: "LOGOUT" });
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
           return;
         }
       }
@@ -35,8 +34,20 @@ export async function loginUser(dispatch, loginPayload) {
 }
 
 export function logout(dispatch) {
-  console.log("log me out bitch");
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("user");
   localStorage.removeItem("token");
+}
+
+export async function getJobs(pageNum) {
+  const { tokenType, accessToken } = JSON.parse(localStorage.getItem("token"));
+  const config = {
+    headers: { Authorization: `${tokenType} ${accessToken}` },
+    params : {
+      page: pageNum,
+      sizePerPage: 20,
+    }
+  };
+  let { data } = await axios.get(`${ROOT_URL}/job-posts`, config);
+  return data;
 }

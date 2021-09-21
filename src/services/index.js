@@ -17,11 +17,9 @@ export async function loginUser(dispatch, loginPayload) {
     })
     .catch(function loginError(error) {
       if (error.response) {
-        if (error.response.status === 422) {
-          alert("wrong credentials");
-          dispatch({ type: "LOGOUT" });
-          return;
-        }
+        alert(`${error.response.statusText}, please try again`);
+        dispatch({ type: "LOGOUT" });
+        return;
       }
     });
 
@@ -43,11 +41,42 @@ export async function getJobs(pageNum) {
   const { tokenType, accessToken } = JSON.parse(localStorage.getItem("token"));
   const config = {
     headers: { Authorization: `${tokenType} ${accessToken}` },
-    params : {
+    params: {
       page: pageNum,
-      sizePerPage: 20,
-    }
+      sizePerPage: 5,
+    },
   };
   let { data } = await axios.get(`${ROOT_URL}/job-posts`, config);
+  return data;
+}
+
+export async function getJob(id) {
+  const { tokenType, accessToken } = JSON.parse(localStorage.getItem("token"));
+  const config = {
+    headers: { Authorization: `${tokenType} ${accessToken}` },
+  };
+  let { data } = await axios.get(`${ROOT_URL}/job-posts/${id}`, config);
+  return data;
+}
+
+export async function applyJob(id, yearsOfExperience) {
+  const { tokenType, accessToken } = JSON.parse(localStorage.getItem("token"));
+  const config = {
+    headers: { Authorization: `${tokenType} ${accessToken}` },
+    params: {
+      id: id,
+      yearsOfExperience: yearsOfExperience,
+    },
+  };
+  let data = await axios
+    .post(`${ROOT_URL}/job-posts/apply`, config.params, {
+      headers: config.headers,
+    })
+    .catch(function (error) {
+      if (error.response) {
+        alert(`${error.response.statusText}, please try again`);
+        return;
+      }
+    });
   return data;
 }

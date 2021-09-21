@@ -2,8 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { getJobs } from "../../services";
 import { useHistory } from "react-router-dom";
 import { logout } from "../../services";
-import { AuthDispatchContext } from "../../context/UserContext";
+import {
+  AuthDispatchContext,
+  AuthUserContext,
+} from "../../context/UserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import JobBox from "../../components/Layout/JobBox";
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -12,17 +16,23 @@ const Dashboard = () => {
   const [apiTotalCount, setApiTotalCount] = useState(0);
 
   const dispatch = useContext(AuthDispatchContext);
+  const { userDetails } = useContext(AuthUserContext);
   let history = useHistory();
-  
-  const { expiresIn } = JSON.parse(localStorage.getItem("token"));
-  const isTokenExpired = Date.now() >= new Date(expiresIn);
-
 
   useEffect(() => {
-    if (isTokenExpired) {
-      logout(dispatch);
+    if (localStorage.getItem("token") === null) {
       history.push("/");
+      return;
+    } else {
+      const { expiresIn } = JSON.parse(localStorage.getItem("token"));
+      const isTokenExpired = Date.now() >= new Date(expiresIn);
+      if (isTokenExpired) {
+        logout(dispatch);
+        history.push("/");
+        return;
+      }
     }
+
     const data = getJobs(page);
     setPage(page + 1);
     data.then((data) => {
@@ -44,7 +54,14 @@ const Dashboard = () => {
   return (
     <>
       <div>
-        <h1>Dashboard</h1>
+        <div>
+          <div>Hello</div>
+          <div>{userDetails.email}</div>
+          <div>search for a job</div>
+          <div>
+            Showing {(page - 1) * 5} of {apiTotalCount} results
+          </div>
+        </div>
         <InfiniteScroll
           dataLength={jobs.length}
           next={handleMoreJobs}
@@ -52,17 +69,11 @@ const Dashboard = () => {
           loader={<h4>Loading...</h4>}
           endMessage={<b>Yay! You have seen it all</b>}
         >
-          {jobs.map((x, i) => (
-            <>
-              <div key={i}>
-                <div>{x.title}</div>
-                <div>{x.id}</div>
-              </div>
-            </>
-          ))}
+          <div className="flex flex-col items-center">
+            {jobs && jobs.map((x, i) => <JobBox data={x} key={i} />)}
+          </div>
         </InfiniteScroll>
       </div>
-      <button onClick={(e) => handleMoreJobs(e)}>more jobs</button>
     </>
   );
 };

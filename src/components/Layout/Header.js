@@ -14,8 +14,10 @@ const Header = () => {
 
   return (
     <>
-      <h4>kariera.gr</h4>
-      <button onClick={handleLogout}>logout</button>
+      <div className="container h-11 flex justify-between items-center bg-gray-400">
+        <div className="ml-4">kariera.gr</div>
+        <button className="mr-4" onClick={handleLogout}>logout</button>
+      </div>
     </>
   );
 };

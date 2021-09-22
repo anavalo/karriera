@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-import {
-  AuthDispatchContext,
-  AuthUserContext,
-} from "../context/UserContext";
+import { AuthDispatchContext, AuthUserContext } from "../context/UserContext";
 
 import { getJobs } from "../services";
 import { logout } from "../services";
@@ -19,14 +16,14 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [hasMore, SetHasMore] = useState(true);
   const [apiTotalCount, setApiTotalCount] = useState(0);
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
 
   const dispatch = useContext(AuthDispatchContext);
   const { userDetails } = useContext(AuthUserContext);
 
   let history = useHistory();
 
-  let filteredJobs = filterJobs(jobs, query)
+  let filteredJobs = filterJobs(jobs, query);
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -43,7 +40,7 @@ const Dashboard = () => {
     }
 
     const data = getJobs(page);
-    setPage(page => page + 1);
+    setPage((page) => page + 1);
     data.then((data) => {
       setJobs(data.items);
       setApiTotalCount(data.totalCount);
@@ -57,24 +54,26 @@ const Dashboard = () => {
     }
     let newJobs = getJobs(page);
     newJobs.then((newJobs) => setJobs([...jobs, ...newJobs.items]));
-    setPage(page => page + 1);
+    setPage((page) => page + 1);
   };
 
   return (
     <>
-      <div>
+      <div className="p-5">
         <div>
-          <div>Hello</div>
-          <div>{userDetails.email}</div>
-          <div>search for a job</div>
+          <div className="pb-1">Hello</div>
+          <div className="text-xl pb-2">{userDetails.email}</div>
+          <div className="border-black border-b-2 pb-1"></div>
+          <div className="pb-1 pt-3">search for a job</div>
           <input
-                type="text"
-                id="query"
-                value={query}
-                onChange={({ target }) => setQuery(target.value)}
-                className="bg-gray-200 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight"
-              />
-          <div>
+            placeholder="search.."
+            type="text"
+            id="query"
+            value={query}
+            onChange={({ target }) => setQuery(target.value)}
+            className="bg-gray-200 appearance-none border w-full py-2 px-4 text-gray-700 leading-tight"
+          />
+          <div className="font-bold text-xl pb-2 pt-2">
             Showing {(page - 1) * 5} of {apiTotalCount} results
           </div>
         </div>

@@ -34,7 +34,7 @@ const Modal = ({ setModal, data, setConfirmation }) => {
     <>
       <div className="h-full w-full bg-gray-400 fixed top-0 overflow-scroll">
         <button className="" onClick={() => setModal(false)}>
-          close
+          Close
         </button>
         <div dangerouslySetInnerHTML={{ __html: description }} />
         <form>
@@ -59,7 +59,7 @@ const Modal = ({ setModal, data, setConfirmation }) => {
               />
             </div>
             <button
-              className="mt-6 bg-gray-400 w-24 h-11"
+              className="mt-6 bg-gray-200 w-24 h-11"
               onClick={(e) => handleApply(e)}
             >
               apply

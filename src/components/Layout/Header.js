@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
-import { logout } from "../../services";
-import { AuthDispatchContext } from "../../context/UserContext";
 import { useHistory, Link } from "react-router-dom";
+
+import { AuthDispatchContext } from "../../context/UserContext";
+
+import { logout } from "../../services";
 
 const Header = () => {
   const dispatch = useContext(AuthDispatchContext);

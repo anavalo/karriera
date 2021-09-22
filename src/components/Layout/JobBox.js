@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import { getJob } from "../../services";
+
 import Modal from "./Modal";
 import Confirmation from "../../pages/ConfirmationPage";
 
@@ -32,31 +34,31 @@ const JobBox = ({ data }) => {
 
   return (
     <>
-      <div className="w-80 h-48 bg-gray-200 my-3 flex flex-col p-4">
-        <div className="flex-col">
+      <div className="w-full h-48 bg-gray-200 my-3 flex flex-col p-4">
+        <div className="flex flex-row justify-between pb-8">
           <div>{companyName}</div>
-          <div>{title}</div>
+          <div className="font-bold">{title}</div>
         </div>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between pb-8">
           <div className="flex-col">
-            <div>Date Posted</div>
-            <div>
+            <div className="text-xs">Date Posted</div>
+            <div className="font-bold text-xs">
               {creationDay}&nbsp;{creationMonth}
             </div>
           </div>
           <div className="flex-col">
-            <div>Apply Until</div>
-            <div>
+            <div className="text-xs">Apply Until</div>
+            <div className="font-bold text-xs">
               {validUntilDay}&nbsp;{validUntilMonth}
             </div>
           </div>
           <div className="flex-col">
-            <div>Location</div>
-            <div>{address}</div>
+            <div className="text-xs">Location</div>
+            <div className="font-bold text-xs">{address}</div>
           </div>
         </div>
         <div>
-          <button onClick={() => handleClick(id)}>apply now</button>
+          <button className="w-full bg-gray-400 h-11" onClick={() => handleClick(id)}>apply now</button>
         </div>
       </div>
       {modal && jobDetails && (

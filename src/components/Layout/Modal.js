@@ -32,10 +32,19 @@ const Modal = ({ setModal, data, setConfirmation }) => {
 
   return (
     <>
-      <div className="h-full w-full bg-gray-400 fixed top-0 overflow-scroll">
-        <button className="" onClick={() => setModal(false)}>
-          Close
-        </button>
+      <div className="h-full w-full bg-gray-400 fixed top-0 overflow-scroll p-4">
+        <div className="flex justify-between">
+          <div className="font-bold">Apply for the job</div>
+          <button className="" onClick={() => setModal(false)}>
+            X
+          </button>
+        </div>
+
+        <div className="flex flex-row justify-between pb-8 pt-8">
+          <div>{companyName}</div>
+          <div className="font-bold">{title}</div>
+        </div>
+
         <div dangerouslySetInnerHTML={{ __html: description }} />
         <form>
           <div className="flex flex-col items-center container mt-11">

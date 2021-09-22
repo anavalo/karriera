@@ -56,7 +56,7 @@ const Dashboard = () => {
     newJobs.then((newJobs) => setJobs([...jobs, ...newJobs.items]));
     setPage((page) => page + 1);
   };
-
+  const loader = query.length > 0 ? null : <h4> Loading... </h4>;
   return (
     <>
       <div className="p-5">
@@ -81,7 +81,7 @@ const Dashboard = () => {
           dataLength={jobs.length}
           next={handleMoreJobs}
           hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
+          loader={loader}
           endMessage={<b>Yay! You have seen it all</b>}
         >
           <div className="flex flex-col items-center">

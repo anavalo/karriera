@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import { loginUser } from "../../services";
+import { useHistory } from "react-router-dom";
+
 import {
   AuthUserContext,
   AuthDispatchContext,
-} from "../../context/UserContext";
-import { useHistory } from "react-router-dom";
+} from "../context/UserContext";
+
+import { loginUser } from "../services";
+
 
 const Login = () => {
   const [email, setEmail] = useState("email");
@@ -26,8 +29,9 @@ const Login = () => {
     let payload = { email, password };
 
     try {
-      let response = await loginUser(dispatch, payload);
-      if (!response.user) return;
+      dispatch({ type: "REQUEST_LOGIN" });
+      let response = await loginUser(payload);
+      dispatch({ type: "LOGIN_SUCCESS", payload: response });
       history.push("/dashboard");
     } catch (error) {
       console.log(error);
@@ -59,7 +63,11 @@ const Login = () => {
                 className="bg-gray-200 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight"
               />
             </div>
-            <button className="mt-6 bg-gray-400 w-24 h-11" onClick={handleLogin} disabled={loading}>
+            <button
+              className="mt-6 bg-gray-400 w-24 h-11"
+              onClick={handleLogin}
+              disabled={loading}
+            >
               Login
             </button>
           </div>

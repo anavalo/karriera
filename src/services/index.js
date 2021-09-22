@@ -2,14 +2,12 @@ import axios from "axios";
 
 const ROOT_URL = "https://ka-fe-assignment.azurewebsites.net/api";
 
-export async function loginUser(dispatch, loginPayload) {
+export async function loginUser(loginPayload) {
   const body = {
     email: loginPayload.email,
     password: loginPayload.password,
   };
   const headers = { "Content-Type": "application/json" };
-
-  dispatch({ type: "REQUEST_LOGIN" });
 
   let { data } = await axios
     .post(`${ROOT_URL}/login`, JSON.stringify(body), {
@@ -18,21 +16,18 @@ export async function loginUser(dispatch, loginPayload) {
     .catch(function loginError(error) {
       if (error.response) {
         alert(`${error.response.statusText}, please try again`);
-        dispatch({ type: "LOGOUT" });
         return;
       }
     });
 
   if (data.user) {
-    dispatch({ type: "LOGIN_SUCCESS", payload: data });
     localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("token", JSON.stringify(data.token));
     return data;
   }
 }
 
-export function logout(dispatch) {
-  dispatch({ type: "LOGOUT" });
+export function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
 }

@@ -1,23 +1,32 @@
 import React, { useEffect, useState, useContext } from "react";
-import { getJobs } from "../../services";
 import { useHistory } from "react-router-dom";
-import { logout } from "../../services";
+
 import {
   AuthDispatchContext,
   AuthUserContext,
-} from "../../context/UserContext";
+} from "../context/UserContext";
+
+import { getJobs } from "../services";
+import { logout } from "../services";
+
 import InfiniteScroll from "react-infinite-scroll-component";
-import JobBox from "../../components/Layout/JobBox";
+import JobBox from "../components/Layout/JobBox";
+
+import { filterJobs } from "../helpers/filterJobs";
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, SetHasMore] = useState(true);
   const [apiTotalCount, setApiTotalCount] = useState(0);
+  const [query, setQuery] = useState("")
 
   const dispatch = useContext(AuthDispatchContext);
   const { userDetails } = useContext(AuthUserContext);
+
   let history = useHistory();
+
+  let filteredJobs = filterJobs(jobs, query)
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -34,7 +43,7 @@ const Dashboard = () => {
     }
 
     const data = getJobs(page);
-    setPage(page + 1);
+    setPage(page => page + 1);
     data.then((data) => {
       setJobs(data.items);
       setApiTotalCount(data.totalCount);
@@ -48,7 +57,7 @@ const Dashboard = () => {
     }
     let newJobs = getJobs(page);
     newJobs.then((newJobs) => setJobs([...jobs, ...newJobs.items]));
-    setPage(page + 1);
+    setPage(page => page + 1);
   };
 
   return (
@@ -58,6 +67,13 @@ const Dashboard = () => {
           <div>Hello</div>
           <div>{userDetails.email}</div>
           <div>search for a job</div>
+          <input
+                type="text"
+                id="query"
+                value={query}
+                onChange={({ target }) => setQuery(target.value)}
+                className="bg-gray-200 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight"
+              />
           <div>
             Showing {(page - 1) * 5} of {apiTotalCount} results
           </div>
@@ -70,7 +86,7 @@ const Dashboard = () => {
           endMessage={<b>Yay! You have seen it all</b>}
         >
           <div className="flex flex-col items-center">
-            {jobs && jobs.map((x, i) => <JobBox data={x} key={i} />)}
+            {jobs && filteredJobs.map((x, i) => <JobBox data={x} key={i} />)}
           </div>
         </InfiniteScroll>
       </div>

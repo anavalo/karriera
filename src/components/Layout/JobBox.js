@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getJob } from "../../services";
 import Modal from "./Modal";
-import Confirmation from "../ConfirmationPage";
+import Confirmation from "../../pages/ConfirmationPage";
 
 const JobBox = ({ data }) => {
   const { address, companyName, createdAt, title, validUntil, id } = data;

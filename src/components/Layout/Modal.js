@@ -18,12 +18,16 @@ const Modal = ({ setModal, data, setConfirmation }) => {
   const handleApply = (e) => {
     e.preventDefault();
     const job = applyJob(id, yearsOfExp);
-    job.then((data) => {
-      if (data.status === 200) {
-        setConfirmation(true);
-        setModal(false);
-      }
-    });
+    job
+      .then((data) => {
+        if (data.status === 200) {
+          setConfirmation(true);
+          setModal(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

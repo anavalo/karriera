@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/UserContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Layout/Header";
+import Four from "./pages/FourZeroFour"
 
 const App = () => {
   return (
@@ -12,12 +13,14 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Switch>
-        {/* <ProtectedRoute exact path="/dashboard" component={Dashboard} /> */}
         <Route exact path="/">
           <Login />
         </Route>
         <Route exact path="/dashboard">
           <Dashboard />
+        </Route>
+        <Route path="/*">
+          <Four/>
         </Route>
         </Switch>
       </BrowserRouter>
